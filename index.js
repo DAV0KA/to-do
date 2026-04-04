@@ -25,12 +25,20 @@ function createItem(item) {
 	const template = document.getElementById("to-do__item-template");
 	const clone = template.content.querySelector(".to-do__item").cloneNode(true);
 	const textElement = clone.querySelector(".to-do__item-text");
-  const deleteButton = clone.querySelector(".to-do__item-button_type_delete");
+	const deleteButton = clone.querySelector(".to-do__item-button_type_delete");
   const duplicateButton = clone.querySelector(".to-do__item-button_type_duplicate");
   const editButton = clone.querySelector(".to-do__item-button_type_edit");
 
-  textElement.textContent = item;
-  return clone;
+  	textElement.textContent = item;
+
+	deleteButton.addEventListener("click", function () {
+		clone.remove();
+
+		items = getTasksFromDOM();
+		saveTasks(items);
+	});
+	
+    return clone;
 }
 
 function getTasksFromDOM() {
