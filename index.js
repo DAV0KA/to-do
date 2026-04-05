@@ -26,8 +26,8 @@ function createItem(item) {
 	const clone = template.content.querySelector(".to-do__item").cloneNode(true);
 	const textElement = clone.querySelector(".to-do__item-text");
 	const deleteButton = clone.querySelector(".to-do__item-button_type_delete");
-  const duplicateButton = clone.querySelector(".to-do__item-button_type_duplicate");
-  const editButton = clone.querySelector(".to-do__item-button_type_edit");
+    const duplicateButton = clone.querySelector(".to-do__item-button_type_duplicate");
+    const editButton = clone.querySelector(".to-do__item-button_type_edit");
 
   	textElement.textContent = item;
 
@@ -53,8 +53,16 @@ function createItem(item) {
 		textElement.focus();
 	});
 
-		textElement.addEventListener("blur", function () {
+	textElement.addEventListener("blur", function () {
+		const newValue = textElement.textContent.trim();
+
 		textElement.setAttribute("contenteditable", "false");
+
+		if (!newValue) {
+			clone.remove();
+		} else {
+			textElement.textContent = newValue;
+		}
 
 		items = getTasksFromDOM();
 		saveTasks(items);
@@ -88,7 +96,11 @@ items.forEach(function(item) {
 formElement.addEventListener("submit", function (evt) {
   	evt.preventDefault();
 
- 	const value = inputElement.value;
+ 	const value = inputElement.value.trim();
+   
+	if (!value) {
+		return;
+	};
 
   	const taskElement = createItem(value);
   	listElement.prepend(taskElement);
